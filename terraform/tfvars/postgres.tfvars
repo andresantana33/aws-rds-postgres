@@ -1,7 +1,7 @@
 region = "us-east-1"
 
 db_config = {
-  dbriverdata = {
+  dbpostgres = {
     engine = "postgres",
     engine_version = "15.7",
     instance_class = "db.t3.micro",

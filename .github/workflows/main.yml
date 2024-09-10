@@ -1,4 +1,4 @@
-name: Destroy AWS Postgres
+name: Deploy AWS Postgres
 
 on:
   push:

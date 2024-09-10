@@ -2,7 +2,7 @@
 variable "organization" {
   type        = string
   description = "Name of the client organization"
-  default     = "riverdata"
+  default     = "infra-labs"
 }
 
 variable "vpc_name" {
