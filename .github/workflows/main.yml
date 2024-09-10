@@ -81,6 +81,6 @@ jobs:
   
       - name: Terraform Apply
         if: github.ref == 'refs/heads/dev'
-        working-directory: ./terraform
+        working-directory: ./terraform-${{ matrix.module }}
         run: terraform apply --auto-approve tfplan
   
