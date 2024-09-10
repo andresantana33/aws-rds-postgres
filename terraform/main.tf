@@ -4,7 +4,7 @@ data "aws_partition" "current" {}
 locals {
   vpc_name   = "default"
   vpc_id     = "vpc-026d706dad61955c6"
-  subnet_ids = ["subnet-07fb304aff8b74abd", "subnet-07fb304aff8b74abd"]
+  subnet_ids = ["subnet-07fb304aff8b74abd", "subnet-0832b7b478cf833f2"]
 }
 
 data "aws_vpc" "vpc" {
