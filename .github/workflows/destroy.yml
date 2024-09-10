@@ -39,11 +39,11 @@ jobs:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
 
       - name: Terraform Init and Workspace Select
-        working-directory: ./modules/aws-${{ matrix.module }}
+        working-directory: ./terraform/aws-${{ matrix.module }}
         run: |
           terraform init
           terraform workspace select ${{ env.WORKSPACE }} || terraform workspace new ${{ env.WORKSPACE }}
 
       - name: Terraform Destroy
-        working-directory: ./modules/aws-${{ matrix.module }}
+        working-directory: ./terraform/aws-${{ matrix.module }}
         run: terraform destroy -auto-approve -var-file=tfvars/${{ matrix.module }}.tfvars
