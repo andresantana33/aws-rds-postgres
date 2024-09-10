@@ -60,7 +60,7 @@ jobs:
           role-session-name: terraform-${{ github.job }}-${{ github.run_id }}     
         
       - name: Terraform Init
-        working-directory: ./modules/aws-rds-postgres/terraform/aws-${{ matrix.module }}
+        working-directory: ./terraform/aws-${{ matrix.module }}
         run: terraform init
 
       - name: Select Terraform Workspace
