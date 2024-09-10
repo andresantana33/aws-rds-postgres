@@ -43,6 +43,7 @@ jobs:
       matrix:
         module:
           - postgres
+          - sns
           
     defaults:
       run:
