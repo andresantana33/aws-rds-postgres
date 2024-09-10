@@ -1,3 +1,12 @@
+data "aws_availability_zones" "available" {}
+data "aws_partition" "current" {}
+
+locals {
+  vpc_name   = "default"
+  vpc_id     = "vpc-026d706dad61955c6"
+  subnet_ids = ["subnet-07fb304aff8b74abd", "subnet-07fb304aff8b74abd"]
+}
+
 data "aws_vpc" "vpc" {
   tags = {
     Name = var.vpc_name
@@ -25,20 +34,19 @@ module "db" {
 
   identifier = each.key
 
-  engine                       = each.value.engine
-  engine_version               = each.value.engine_version
-  instance_class               = each.value.instance_class
-  allocated_storage            = each.value.allocated_storage
-  storage_type                 = each.value.storage_type
-  performance_insights_enabled = each.value.performance_insights_enabled
-
+  engine                               = each.value.engine
+  engine_version                       = each.value.engine_version
+  instance_class                       = each.value.instance_class
+  allocated_storage                    = each.value.allocated_storage
+  storage_type                         = each.value.storage_type
+  performance_insights_enabled         = each.value.performance_insights_enabled
   storage_encrypted                    = var.storage_encrypted
   username                             = var.username
   manage_master_user_password_rotation = var.manage_master_user_password_rotation
   port                                 = var.port
   multi_az                             = each.value.multi_az
   create_db_subnet_group               = var.create_db_subnet_group
-  subnet_ids                           = data.aws_subnets.private.ids
+  subnet_ids                           = local.subnet_ids
   vpc_security_group_ids               = [module.security_group[each.key].security_group_id]
   apply_immediately                    = false
   max_allocated_storage                = each.value.max_allocated_storage
