@@ -42,7 +42,7 @@ jobs:
     strategy:
       matrix:
         module:
-          - postgres
+          - rds-postgres
                     
     defaults:
       run:
@@ -60,26 +60,26 @@ jobs:
           role-session-name: terraform-${{ github.job }}-${{ github.run_id }}     
         
       - name: Terraform Init
-        working-directory: ./terraform/aws-${{ matrix.module }}
+        working-directory: ./modules/aws-${{ matrix.module }}
         run: terraform init
 
       - name: Select Terraform Workspace
-        working-directory: ./terraform/aws-${{ matrix.module }}
+        working-directory: ./modules/aws-${{ matrix.module }}
         run: terraform workspace select ${{ env.WORKSPACE }} || terraform workspace new ${{ env.WORKSPACE }}
 
       - name: Terraform Format Check
-        working-directory: ./terraform/aws-${{ matrix.module }}
+        working-directory: ./modules/aws-${{ matrix.module }}
         run: terraform fmt -check || (echo "Please run 'terraform fmt' to fix formatting issues." && exit 1)
 
       - name: Terraform Validate
-        working-directory: ./terraform/aws-${{ matrix.module }}
+        working-directory: ./modules/aws-${{ matrix.module }}
         run: terraform validate -no-color
 
       - name: Terraform Plan
-        working-directory: ./terraform/aws-${{ matrix.module }}
+        working-directory: ./modules/aws-${{ matrix.module }}
         run: terraform plan -var-file=tfvars/${{ matrix.module }}.tfvars -out=tfplan        
        
       - name: Terraform Apply
         if: github.ref == 'refs/heads/dev'
-        working-directory: ./terraform/aws-${{ matrix.module }}
+        working-directory: ./modules/aws-${{ matrix.module }}
         run: terraform apply --auto-approve tfplan
