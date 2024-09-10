@@ -1,0 +1,49 @@
+name: Destroy AWS Resources
+
+on:
+  workflow_dispatch:
+
+env:
+  WORKSPACE: prod
+  AWS_REGION: us-east-1
+  ROLE_TO_ASSUME: arn:aws:iam::826972386494:role/gitgub-actions-andresantana33
+  TERRAFORM_VERSION: 1.7.5
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  destroy:
+    name: Destroy AWS Modules (SNS and CloudWatch)
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module:
+          - postgres
+          
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform and AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ env.ROLE_TO_ASSUME }}
+          role-session-name: terraform-${{ github.job }}-${{ github.run_id }}
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      - name: Terraform Init and Workspace Select
+        working-directory: ./modules/aws-${{ matrix.module }}
+        run: |
+          terraform init
+          terraform workspace select ${{ env.WORKSPACE }} || terraform workspace new ${{ env.WORKSPACE }}
+
+      - name: Terraform Destroy
+        working-directory: ./modules/aws-${{ matrix.module }}
+        run: terraform destroy -auto-approve -var-file=tfvars/${{ matrix.module }}.tfvars
