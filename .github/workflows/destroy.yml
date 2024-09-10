@@ -39,7 +39,7 @@ jobs:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
 
       - name: Terraform Init and Workspace Select
-        working-directory: ./modules/aws-rds-aurora/terraform/aws-${{ matrix.module }}
+        working-directory: ./aws-rds-aurora/terraform/aws-${{ matrix.module }}
         run: |
           terraform init
           terraform workspace select ${{ env.WORKSPACE }} || terraform workspace new ${{ env.WORKSPACE }}
