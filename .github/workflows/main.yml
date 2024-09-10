@@ -1,4 +1,4 @@
-name: Deployment AWS Resources
+name: Destroy AWS Postgres
 
 on:
   push:
@@ -37,7 +37,7 @@ jobs:
 
   deploy:
     needs: setup
-    name: Deploy AWS Modules (SNS and CloudWatch)
+    name: Deploy AWS Postgres
     runs-on: ubuntu-latest
     strategy:
       matrix:
