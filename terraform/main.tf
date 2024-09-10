@@ -1,7 +1,7 @@
 data "aws_vpc" "vpc" {
   tags = {
     Name = var.vpc_name
-    }
+  }
 }
 
 data "aws_subnets" "private" {
@@ -32,17 +32,17 @@ module "db" {
   storage_type                 = each.value.storage_type
   performance_insights_enabled = each.value.performance_insights_enabled
 
-  storage_encrypted            = var.storage_encrypted
-  username                     = var.username
+  storage_encrypted                    = var.storage_encrypted
+  username                             = var.username
   manage_master_user_password_rotation = var.manage_master_user_password_rotation
-  port                         = var.port
-  multi_az                     = each.value.multi_az
-  create_db_subnet_group       = var.create_db_subnet_group
-  subnet_ids                   = data.aws_subnets.private.ids
-  vpc_security_group_ids       = [module.security_group[each.key].security_group_id]
-  apply_immediately            = false
-  max_allocated_storage        = each.value.max_allocated_storage
- 
+  port                                 = var.port
+  multi_az                             = each.value.multi_az
+  create_db_subnet_group               = var.create_db_subnet_group
+  subnet_ids                           = data.aws_subnets.private.ids
+  vpc_security_group_ids               = [module.security_group[each.key].security_group_id]
+  apply_immediately                    = false
+  max_allocated_storage                = each.value.max_allocated_storage
+
 
   enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
   create_cloudwatch_log_group     = false
