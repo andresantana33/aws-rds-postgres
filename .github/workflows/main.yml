@@ -80,7 +80,7 @@ jobs:
         run: terraform plan -var-file=tfvars/${{ matrix.module }}.tfvars -out=tfplan        
   
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/dev'
-        working-directory: ./terraform-${{ matrix.module }}
+        if: github.ref == 'refs/heads/main'
+        working-directory: ./terraform
         run: terraform apply --auto-approve tfplan
   
